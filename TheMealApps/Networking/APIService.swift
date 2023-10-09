@@ -23,7 +23,10 @@ class APIService: APIServiceProtocol {
       switch response.result {
       case .success(let data):
         do {
-          guard let data = data else { return }
+          guard let data = data else {
+            completion(.failure(.noData))
+            return
+          }
           let mealsResponse = try JSONDecoder().decode(MealResponses.self, from: data)
           let mealModel = self.mapMealResponseToMealModel(from: mealsResponse.meals)
           completion(.success(mealModel))
@@ -42,7 +45,10 @@ class APIService: APIServiceProtocol {
       switch response.result {
       case .success(let data):
         do {
-          guard let data = data else { return }
+          guard let data = data else {
+            completion(.failure(.noData))
+            return
+          }
           let mealsResponse = try JSONDecoder().decode(MealResponses.self, from: data)
           let mealModel = self.mapMealResponseToMealModel(from: mealsResponse.meals)
           completion(.success(mealModel))
@@ -61,7 +67,10 @@ class APIService: APIServiceProtocol {
       switch response.result {
       case .success(let data):
         do {
-          guard let data = data else { return }
+          guard let data = data else {
+            completion(.failure(.noData))
+            return
+          }
           let detailMealResponse = try JSONDecoder().decode(MealResponses.self, from: data)
           let ingredientsAndMeasure = self.mapIngredientsAndMeasure(from: detailMealResponse.meals)
           let detailMealModel = MealModel(id: detailMealResponse.meals.first?.id, title: detailMealResponse.meals.first?.title, drinkAlternate: detailMealResponse.meals.first?.drinkAlternate, category: detailMealResponse.meals.first?.category, area: detailMealResponse.meals.first?.area, instructions: detailMealResponse.meals.first?.instructions, image: detailMealResponse.meals.first?.image, tags: detailMealResponse.meals.first?.tags, youtube: detailMealResponse.meals.first?.youtube, source: detailMealResponse.meals.first?.source, imageSource: detailMealResponse.meals.first?.imageSource, creativeCommonsConfirmed: detailMealResponse.meals.first?.creativeCommonsConfirmed, dateModified: detailMealResponse.meals.first?.dateModified, ingredientsAndMeasure: ingredientsAndMeasure)

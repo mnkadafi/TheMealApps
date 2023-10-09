@@ -27,6 +27,7 @@ class DetailMealViewModel: ObservableObject {
       switch result {
       case .success(let meal):
         guard let meal = meal else {
+          self.isLoading = false
           return
         }
         
@@ -37,6 +38,7 @@ class DetailMealViewModel: ObservableObject {
         }
       case .failure(let error):
         print(error)
+        self.isLoading = false
       }
     }
   }
