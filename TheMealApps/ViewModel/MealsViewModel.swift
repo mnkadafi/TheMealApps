@@ -35,7 +35,10 @@ class MealsViewModel: ObservableObject {
     apiService.fetchMealsByCategory(category) { meals in
       switch meals {
       case .success(let meal):
-        guard let mealBatch = meal else { return }
+        guard let mealBatch = meal else {
+          self.isLoading = false
+          return
+        }
         
         DispatchQueue.main.async {
           self.meals = Array(mealBatch.prefix(self.batchSize))
@@ -74,6 +77,7 @@ class MealsViewModel: ObservableObject {
           }
         case .failure(let error):
           print(error)
+          self.isLoading = false
         }
       }
     } else {
@@ -151,17 +155,6 @@ class MealsViewModel: ObservableObject {
     textSearch = ""
     endOfData = false
     endOfSearchData = false
-  }
-}
-
-public struct HTTPMethod: RawRepresentable, Equatable, Hashable {
-  public static let get = HTTPMethod(rawValue: "GET")
-  public static let post = HTTPMethod(rawValue: "POST")
-  
-  public let rawValue: String
-  
-  public init(rawValue: String) {
-    self.rawValue = rawValue
   }
 }
 
